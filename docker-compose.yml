@@ -1,0 +1,7 @@
+# Development docker-compose file
+version: '2.2'
+services:
+    web:
+        build: .
+        ports:
+          - "4201:80"
