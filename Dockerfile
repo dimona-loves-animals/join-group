@@ -1,17 +1,6 @@
-#FROM node:8-alpine as angular-built
+FROM node:16.19.1-bullseye-slim as angular-built
 
-#RUN apk update \
-#  && apk add --update alpine-sdk python \
-#  && yarn global add @angular/cli@6.0.0-beta.7 \
-#  && ng set --global packageManager=yarn \
-#  && apk del alpine-sdk python \
-#  && rm -rf /tmp/* /var/cache/apk/* *.tar.gz ~/.npm \
-#  && npm cache clean --force \
-#  && yarn cache clean \
-#  && sed -i -e "s/bin\/ash/bin\/sh/" /etc/passwd
-FROM node:8-stretch as angular-built
-
-ARG NG_CLI_VERSION=1.7.4
+ARG NG_CLI_VERSION=15.2.4
 ARG USER_HOME_DIR="/tmp"
 ARG APP_DIR="/app"
 ARG USER_ID=1000
@@ -22,6 +11,7 @@ ENV HOME "$USER_HOME_DIR"
 # npm 5 uses different userid when installing packages, as workaround su to node when installing
 # see https://github.com/npm/npm/issues/16766
 RUN set -xe \
+    && apt-get update && apt-get install curl -y \
     && curl -sL https://github.com/Yelp/dumb-init/releases/download/v1.2.1/dumb-init_1.2.1_amd64 > /usr/bin/dumb-init \
     && chmod +x /usr/bin/dumb-init \
     && mkdir -p $USER_HOME_DIR \
@@ -30,7 +20,6 @@ RUN set -xe \
     && chown -R node /usr/local/lib /usr/local/include /usr/local/share /usr/local/bin \
     && (cd "$USER_HOME_DIR"; su node -c "npm install -g @angular/cli@$NG_CLI_VERSION; npm install -g yarn; chmod +x /usr/local/bin/yarn; npm cache clean --force")
 
-RUN npm i npm@latest -g
 
 WORKDIR $APP_DIR
 EXPOSE 4200
@@ -41,7 +30,7 @@ RUN yarn install
 
 COPY . .
 
-RUN ng build --prod
+RUN ng build --configuration production
 
 USER $USER_ID
 

@@ -7,13 +7,13 @@ import {Component} from '@angular/core';
 })
 export class AppComponent {
   minAge = 18;
-  showForm;
-  form_completed;
-  birthDate;
-  agreeTerms;
-  age_is_wrong;
+  showForm: boolean = false;
+  form_completed: boolean = false;
+  birthDate: string | number | Date | null = null;
+  agreeTerms: any;
+  age_is_wrong: boolean = false;
 
-  license = 'ההצטרפות לקבוצת הוואטסאפ מוגבלת לגיל ' +
+  license: string = 'ההצטרפות לקבוצת הוואטסאפ מוגבלת לגיל ' +
     this.minAge +
     ' ומעלה';
 
@@ -23,6 +23,9 @@ export class AppComponent {
 
   join() {
     if (this.showForm) {
+      if (!this.birthDate) {
+        return;
+      }
       const ageDifMs = Date.now() - new Date(this.birthDate).getTime();
       const ageDate = new Date(ageDifMs);
       const age = Math.abs(ageDate.getUTCFullYear() - 1970);
