@@ -1,10 +1,8 @@
 # Development docker-compose file
 version: '2.2'
 services:
-  join-group-dla-www:
+  www:
     build: .
-    ports:
-      - "4221:80"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.join-group-dla-www.rule=Host(`join-group.dimonalovesanimals.org`)"
