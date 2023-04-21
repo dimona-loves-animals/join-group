@@ -10,4 +10,3 @@ services:
       - "traefik.http.routers.join-group-dla-www.rule=Host(`join-group.dimonalovesanimals.org`)"
       - "traefik.http.routers.join-group-dla-www.entrypoints=websecure"
       - "traefik.http.routers.join-group-dla-www.tls.certresolver=myresolver"
-      #- "traefik.http.services.join-group-dla-www.loadbalancer.server.port=80"
