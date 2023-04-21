@@ -4,4 +4,19 @@ services:
   web:
     build: .
     ports:
+      - "4202:80"
+
+  ssl:
+    image: valian/docker-nginx-auto-ssl
+    restart: on-failure
+    ports:
       - "4201:80"
+      - "4431:443"
+    volumes:
+      - ssl_data:/etc/resty-auto-ssl
+    environment:
+      ALLOWED_DOMAINS: 'join-group.dimonalovesanimals.org'
+      SITES: 'join-group.dimonalovesanimals.org=web:80'
+
+volumes:
+  ssl_data:
