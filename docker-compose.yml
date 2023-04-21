@@ -1,22 +1,13 @@
 # Development docker-compose file
 version: '2.2'
 services:
-  web:
+  join-group-dla-www:
     build: .
     ports:
       - "4221:80"
-
-  ssl:
-    image: valian/docker-nginx-auto-ssl
-    restart: on-failure
-    ports:
-      - "4201:80"
-      - "4432:443"
-    volumes:
-      - ssl_data:/etc/resty-auto-ssl
-    environment:
-      ALLOWED_DOMAINS: 'join-group.dimonalovesanimals.org'
-      SITES: 'join-group.dimonalovesanimals.org=web:80'
-
-volumes:
-  ssl_data:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.join-group-dla-www.rule=Host(`join-group.dimonalovesanimals.org`)"
+      - "traefik.http.routers.join-group-dla-www.entrypoints=websecure"
+      - "traefik.http.routers.join-group-dla-www.tls.certresolver=myresolver"
+      #- "traefik.http.services.join-group-dla-www.loadbalancer.server.port=80"
