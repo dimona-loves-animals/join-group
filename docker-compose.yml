@@ -4,7 +4,7 @@ services:
   web:
     build: .
     ports:
-      - "4202:80"
+      - "4221:80"
 
   ssl:
     image: valian/docker-nginx-auto-ssl
