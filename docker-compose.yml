@@ -3,6 +3,7 @@ version: '2.2'
 services:
   www:
     build: .
+    restart: unless-stopped
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.join-group-dla-www.rule=Host(`join-group.dimonalovesanimals.org`)"
